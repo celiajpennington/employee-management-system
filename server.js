@@ -1,6 +1,10 @@
 const express = require('express');
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
+const employee = require('./lib/employees');
+const role = require('./lib/roles');
+const department = require('./lib/departments');
+ 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -8,25 +12,35 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const db = mysql.createConnection(
-    {
-      host: 'localhost',
-      // MySQL username,
-      user: 'root',
-      // MySQL password
-      password: 'Funnygirl@214',
-      database: 'employee_management_db'
+// Connect to database
+const db = mysql.createConnection({
+        host: 'localhost',
+        // MySQL username,
+        user: 'root',
+        // MySQL password
+        password: 'Password123',
+        database: 'roster_db'
     },
-    console.log(`Connected to the courses_db database.`)
-  );
+    console.log(`Connected to the roster_db database.`)
+);
+
+// Query database
+db.query('SELECT * FROM employees', function(err, results) {
+    console.log(results);
+});
+// Query database
+db.query('SELECT * FROM departments', function(err, results) {
+    console.log(results);
+});
+
+// Query database
+db.query('SELECT * FROM roles', function(err, results) {
+    console.log(results);
+});
 
 
-
-
-
-
-
-  app.use((req, res) => {
+// Default response for any other request (Not Found)
+app.use((req, res) => {
     res.status(404).end();
 });
 
